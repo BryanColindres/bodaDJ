@@ -47,7 +47,7 @@ window.BODA_CONFIG = {
   rsvp:   { descripcion: "Nos encantaría contar con tu presencia. Por favor confírmanos antes del 01 de septiembre de 2026." },
   footer: { frase: "Con amor, los esperamos." },
   hero:   { pre: "Nos casamos" },
-  airtable: { apiKey: "TU_API_KEY_AQUI", baseId: "TU_BASE_ID_AQUI", tableId: "Firmas" },
+  airtable: { apiKey: "pateozlSn31eXFbHg.d34aed4901550abd19069d9a66d0b65e0e05fd9bfb53e7f32cbbfd92ae74aa06", baseId: "app4iSEuGfWcESBSB", tableId: "Firmas" },
   fotos: {
     hero:"img/hero.jpg", verso:"img/preboda1.png", evento:"img/preboda2.jpg",
     historia1:"img/preboda3.jpg", historia2:"img/preboda4.jpg", historia3:"img/preboda5.JPG",
