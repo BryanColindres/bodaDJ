@@ -1,0 +1,430 @@
+/* ═══════════════════════════════════════════
+   SOBRE — PANTALLA DE INTRO
+═══════════════════════════════════════════ */
+
+.envelope-screen {
+  position: fixed;
+  inset: 0;
+  z-index: 500;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #F5EDE3;
+  transition: opacity .8s ease, transform .8s ease;
+}
+.envelope-screen.hiding {
+  opacity: 0;
+  pointer-events: none;
+}
+.envelope-screen.hidden {
+  display: none;
+}
+
+/* Fondo texturizado */
+.envelope-bg {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(ellipse at 30% 20%, rgba(212,185,160,.35) 0%, transparent 60%),
+    radial-gradient(ellipse at 70% 80%, rgba(200,169,110,.2) 0%, transparent 55%),
+    linear-gradient(160deg, #F0E6D8 0%, #EDD8C4 50%, #E8CDB5 100%);
+}
+
+/* Partículas flotantes */
+.envelope-particles {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  overflow: hidden;
+}
+.env-particle {
+  position: absolute;
+  border-radius: 50%;
+  opacity: 0;
+  animation: envFloat linear infinite;
+}
+
+@keyframes envFloat {
+  0%   { transform: translateY(110vh) rotate(0deg);   opacity: 0; }
+  10%  { opacity: .6; }
+  90%  { opacity: .4; }
+  100% { transform: translateY(-10vh) rotate(360deg); opacity: 0; }
+}
+
+/* Wrapper del sobre */
+.envelope-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2rem;
+}
+
+.envelope-footer__text {
+  font-family: 'Jost', sans-serif;
+  font-size: .72rem;
+  letter-spacing: .3em;
+  text-transform: uppercase;
+  color: #A08060;
+  opacity: 0;
+  animation: fadeIn 1s 1.5s both;
+}
+@keyframes fadeIn { from{opacity:0} to{opacity:1} }
+
+/* ── El sobre ── */
+.envelope {
+  position: relative;
+  width: min(380px, 88vw);
+  height: min(260px, 60vw);
+  cursor: pointer;
+  filter: drop-shadow(0 30px 60px rgba(100,70,40,.25));
+  transform: scale(.92);
+  animation: envAppear 1.2s .3s var(--ease-bounce, cubic-bezier(.34,1.56,.64,1)) both;
+  transition: filter .3s;
+}
+.envelope:hover {
+  filter: drop-shadow(0 40px 80px rgba(100,70,40,.35));
+}
+
+@keyframes envAppear {
+  from { opacity:0; transform: scale(.7) translateY(40px); }
+  to   { opacity:1; transform: scale(.92) translateY(0); }
+}
+
+/* Cuerpo del sobre */
+.env-body {
+  position: absolute;
+  inset: 0;
+  border-radius: 6px;
+  overflow: visible;
+}
+
+/* Base cream del sobre */
+.env-body::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(160deg, #F0E6D8 0%, #E8D4BC 100%);
+  border-radius: 6px;
+  border: 1px solid rgba(180,140,100,.3);
+}
+
+/* Textura floral embossed (SVG filter) */
+.env-texture {
+  position: absolute;
+  inset: 0;
+  border-radius: 6px;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Ccircle cx='30' cy='30' r='15' fill='none' stroke='%23D4C0A8' stroke-width='.5' opacity='.4'/%3E%3Ccircle cx='170' cy='170' r='20' fill='none' stroke='%23D4C0A8' stroke-width='.5' opacity='.3'/%3E%3Cellipse cx='100' cy='50' rx='12' ry='20' fill='none' stroke='%23D4C0A8' stroke-width='.4' opacity='.35'/%3E%3C/svg%3E");
+  opacity: .6;
+}
+
+/* Alas del sobre */
+.env-wing {
+  position: absolute;
+  bottom: 0;
+  width: 50%;
+  height: 55%;
+  background: linear-gradient(135deg, #E8D4BC 0%, #DFC8AA 100%);
+  border: 1px solid rgba(180,140,100,.2);
+}
+.env-wing--left  {
+  left: 0;
+  clip-path: polygon(0 0, 100% 100%, 0 100%);
+  transform-origin: left bottom;
+}
+.env-wing--right {
+  right: 0;
+  clip-path: polygon(0 100%, 100% 0, 100% 100%);
+  transform-origin: right bottom;
+}
+
+/* Flap inferior */
+.env-flap--bottom {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 52%;
+  background: linear-gradient(180deg, #E0CCBA 0%, #D8C0A8 100%);
+  clip-path: polygon(0 100%, 50% 0%, 100% 100%);
+  border-top: none;
+}
+
+/* Flap superior (se abre) */
+.env-flap--top {
+  position: absolute;
+  top: 0;
+  left: -1px;
+  right: -1px;
+  height: 52%;
+  background: linear-gradient(180deg, #EAD8C4 0%, #E0CCBA 100%);
+  clip-path: polygon(0 0, 50% 100%, 100% 0);
+  transform-origin: top center;
+  transform: rotateX(0deg);
+  transition: transform .6s cubic-bezier(.4,0,.2,1);
+  z-index: 3;
+  border-bottom: 1px solid rgba(180,140,100,.2);
+}
+.envelope.opening .env-flap--top {
+  transform: rotateX(-180deg);
+}
+
+/* Sello de cera dorado */
+.env-seal {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 10;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: .4rem;
+}
+
+.env-seal__inner {
+  width: min(80px, 20vw);
+  height: min(80px, 20vw);
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 35%, #E8C870 0%, #C8A040 40%, #A07828 80%, #886020 100%);
+  box-shadow:
+    0 4px 16px rgba(100,70,20,.4),
+    inset 0 2px 4px rgba(255,220,100,.3),
+    inset 0 -2px 4px rgba(80,50,10,.2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform .3s var(--ease-bounce, cubic-bezier(.34,1.56,.64,1)), box-shadow .3s;
+  cursor: pointer;
+}
+.env-seal__inner svg {
+  width: 70%;
+  height: 70%;
+}
+.env-seal__inner:hover {
+  transform: scale(1.08);
+  box-shadow:
+    0 8px 28px rgba(100,70,20,.5),
+    inset 0 2px 4px rgba(255,220,100,.3),
+    inset 0 -2px 4px rgba(80,50,10,.2);
+}
+
+/* Pulso alrededor del sello */
+.env-seal__pulse {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -70%);
+  width: min(80px, 20vw);
+  height: min(80px, 20vw);
+  border-radius: 50%;
+  border: 2px solid rgba(200,169,110,.6);
+  animation: sealPulse 2s ease-in-out infinite;
+}
+@keyframes sealPulse {
+  0%,100% { transform: translate(-50%,-70%) scale(1);   opacity: .6; }
+  50%      { transform: translate(-50%,-70%) scale(1.3); opacity: 0;  }
+}
+
+.env-seal__hint {
+  font-family: 'Jost', sans-serif;
+  font-size: .65rem;
+  letter-spacing: .2em;
+  text-transform: uppercase;
+  color: #A08060;
+  animation: hintBounce 1.5s ease-in-out infinite;
+}
+@keyframes hintBounce {
+  0%,100% { transform: translateY(0);  }
+  50%      { transform: translateY(3px); }
+}
+
+/* Carta que sale del sobre */
+.env-letter {
+  position: absolute;
+  bottom: 8%;
+  left: 5%;
+  right: 5%;
+  height: 80%;
+  background: linear-gradient(180deg, #FFFAF7 0%, #FFF5F0 100%);
+  border-radius: 4px;
+  border: 1px solid rgba(180,140,100,.15);
+  box-shadow: 0 2px 20px rgba(100,70,40,.1);
+  z-index: 1;
+  transform: translateY(0);
+  transition: transform 1s cubic-bezier(.25,.46,.45,.94);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+.envelope.opening .env-letter {
+  transform: translateY(-85%);
+}
+
+.env-letter__content {
+  text-align: center;
+  padding: 1rem;
+  opacity: 0;
+  transform: translateY(10px);
+  transition: opacity .5s .8s, transform .5s .8s;
+}
+.envelope.opening .env-letter__content {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.env-letter__pre {
+  font-family: 'Jost', sans-serif;
+  font-size: .6rem;
+  letter-spacing: .25em;
+  text-transform: uppercase;
+  color: #A08060;
+  margin-bottom: .4rem;
+}
+.env-letter__names {
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic;
+  font-size: clamp(1rem, 3.5vw, 1.4rem);
+  color: #5A3A2A;
+  line-height: 1.2;
+}
+.env-letter__names span { color: #C8A96E; }
+.env-letter__date {
+  font-family: 'Jost', sans-serif;
+  font-size: .65rem;
+  letter-spacing: .2em;
+  color: #A08060;
+  margin-top: .4rem;
+}
+
+/* ── REVELACIÓN DEL NOMBRE DEL INVITADO ── */
+.guest-reveal {
+  position: fixed;
+  inset: 0;
+  z-index: 400;
+  background: linear-gradient(160deg, #F0E6D8 0%, #E8D4BC 50%, #DFC8AA 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity .6s;
+}
+.guest-reveal.active {
+  opacity: 1;
+  pointer-events: all;
+}
+.guest-reveal.hiding {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.guest-reveal__petals {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  overflow: hidden;
+}
+.petal {
+  position: absolute;
+  font-size: 1.2rem;
+  opacity: 0;
+  animation: petalFall linear both;
+}
+@keyframes petalFall {
+  0%   { transform: translateY(-10px) rotate(0deg); opacity:0; }
+  10%  { opacity: .8; }
+  100% { transform: translateY(110vh) rotate(540deg); opacity:0; }
+}
+
+.guest-reveal__content {
+  position: relative;
+  z-index: 1;
+  padding: 2rem;
+}
+.guest-reveal__pre {
+  font-family: 'Jost', sans-serif;
+  font-size: .72rem;
+  letter-spacing: .3em;
+  text-transform: uppercase;
+  color: #A08060;
+  margin-bottom: 1.5rem;
+  opacity: 0;
+  animation: none;
+}
+.guest-reveal.active .guest-reveal__pre {
+  animation: fadeUp .8s .2s both;
+}
+
+.guest-reveal__name {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(2.5rem, 8vw, 5rem);
+  font-weight: 300;
+  font-style: italic;
+  color: #5A3A2A;
+  line-height: 1.1;
+  margin-bottom: 1.5rem;
+  opacity: 0;
+}
+.guest-reveal.active .guest-reveal__name {
+  animation: nameReveal 1.2s .5s var(--ease-bounce, cubic-bezier(.34,1.56,.64,1)) both;
+}
+@keyframes nameReveal {
+  from { opacity:0; transform: scale(.7) translateY(20px); }
+  to   { opacity:1; transform: scale(1) translateY(0); }
+}
+
+.guest-reveal__divider {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  justify-content: center;
+  margin-bottom: 1.5rem;
+  opacity: 0;
+}
+.guest-reveal.active .guest-reveal__divider {
+  animation: fadeUp .8s .9s both;
+}
+.guest-reveal__divider span {
+  width: 60px; height: 1px;
+  background: rgba(160,128,96,.4);
+}
+.guest-reveal__divider svg {
+  width: 1.5rem; height: .8rem;
+  fill: #C8A96E;
+}
+
+.guest-reveal__sub {
+  font-family: 'Jost', sans-serif;
+  font-size: .78rem;
+  letter-spacing: .15em;
+  color: #A08060;
+  margin-bottom: 2rem;
+  opacity: 0;
+}
+.guest-reveal.active .guest-reveal__sub {
+  animation: fadeUp .8s 1.1s both;
+}
+
+.guest-reveal__arrow {
+  opacity: 0;
+  animation: none;
+}
+.guest-reveal.active .guest-reveal__arrow {
+  animation: fadeUp .8s 1.3s both, arrowBounce 1.5s 2s ease-in-out infinite;
+}
+.guest-reveal__arrow svg {
+  width: 1.5rem; height: 1.5rem;
+  color: #C8A96E;
+  stroke: #C8A96E;
+}
+@keyframes arrowBounce {
+  0%,100% { transform: translateY(0); }
+  50%      { transform: translateY(6px); }
+}
+
+@keyframes fadeUp {
+  from { opacity:0; transform:translateY(20px); }
+  to   { opacity:1; transform:translateY(0); }
+}
